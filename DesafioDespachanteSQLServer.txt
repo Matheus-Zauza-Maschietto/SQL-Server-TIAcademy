@@ -1,0 +1,20 @@
+create schema despachante;
+
+create table despachante.proprietario(
+	cd_cpf_proprietario varchar (11) primary key,
+	nm_proprietario varchar (50)
+	);
+
+create table despachante.veiculo(
+	cd_veiculo int primary key identity (1,1),
+	nm_veiculo varchar (50),
+	cd_cpf_proprietario varchar(11)
+	foreign key (cd_cpf_proprietario) references despachante.proprietario,
+);
+
+create table despachante.licenciamento(
+	cd_veiculo int not null,
+	foreign key (cd_veiculo) references despachante.veiculo,
+	dt_licenciamento date primary key not null,
+	vl_licenciamento money not null
+);

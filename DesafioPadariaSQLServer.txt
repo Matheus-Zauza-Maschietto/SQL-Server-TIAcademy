@@ -1,0 +1,59 @@
+create schema padaria;
+
+drop table padaria.produto;
+
+create table padaria.filial(
+	cd_filial int primary key identity(1, 1),
+	nm_filial varchar(30) not null
+);
+
+create table padaria.forno(
+	cd_forno int primary key identity(1, 1),
+	qt_producao_forno decimal(5, 1) not null, 
+	cd_filial int,
+	foreign key (cd_filial) references padaria.filial
+);
+
+create table padaria.produto(
+	cd_forno int,
+	cd_tipoproduto int,
+	dt_producao datetime,
+	primary key(cd_forno, cd_tipoproduto, dt_producao),
+	dt_validade date,
+	foreign key(cd_forno) references padaria.forno(cd_forno),
+	foreign key(cd_tipoproduto) references padaria.tipoproduto(cd_tipoproduto)
+);
+
+create table padaria.tipoproduto(
+	cd_tipoproduto int primary key identity(1, 1),
+	nm_produto varchar(40) not null
+);
+
+
+create table padaria.materiaprima(
+	cd_materia_prima int primary key identity(1, 1),
+	nm_materia_prima varchar(40) not null
+);
+
+create table padaria.receita(
+	cd_tipo_produto int,
+	cd_materia_prima int,
+	primary key(cd_tipo_produto, cd_materia_prima),
+	qt_materia_prima  decimal(5, 1) not null,
+	foreign key (cd_tipo_produto) references padaria.tipoproduto(cd_tipoproduto),
+	foreign key (cd_materia_prima) references padaria.materiaprima(cd_materia_prima)
+);
+
+create table padaria.fornecedor(
+	cd_fornecedor int primary key identity(1, 1),
+	nm_fornecedor varchar(40)
+);
+
+
+create table padaria.fornecimento(
+	cd_materia_prima int,
+	cd_fornecedor int,
+	primary key (cd_materia_prima, cd_fornecedor),
+	foreign key (cd_materia_prima) references padaria.materiaprima(cd_materia_prima),
+	foreign key (cd_fornecedor) references padaria.fornecedor(cd_fornecedor)
+);

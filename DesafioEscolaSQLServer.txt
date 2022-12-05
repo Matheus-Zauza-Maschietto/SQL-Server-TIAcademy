@@ -1,0 +1,37 @@
+create schema escola;
+
+create table escola.escola(
+	cd_escola int primary key identity(1, 1),
+	sg_escola varchar(8) not null,
+	nm_escola varchar(40) not null
+);
+
+create table escola.docente(
+	cd_docente int primary key identity(1, 1),
+	dt_admissao_docente date not null,
+	cd_escola int not null,
+	foreign key (cd_escola) references escola.escola (cd_escola)
+);
+
+create table escola.disciplinas(
+	cd_disciplina int primary key identity(1, 1),
+	nm_disciplinas varchar(40) not null,
+	cd_escola int not null,
+	foreign key (cd_escola) references escola.escola (cd_escola)
+);
+
+create table escola.aluno(
+	cd_matricula_aluno int primary key identity(1, 1),
+	nm_aluno varchar(50) not null
+);
+
+
+create table escola.historico(
+	cd_matricula_aluno int,
+	cd_disciplinas int,
+	primary key(cd_matricula_aluno, cd_disciplinas),
+	cd_escola int, 
+	foreign key (cd_escola) references escola.escola(cd_escola),
+	foreign key (cd_disciplinas) references escola.disciplinas(cd_disciplina),
+	foreign key (cd_matricula_aluno) references escola.aluno(cd_matricula_aluno)
+);
